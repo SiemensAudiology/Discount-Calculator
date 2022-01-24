@@ -27,7 +27,7 @@ namespace DiscountCalculator.API.Controllers
             {
                 var totalPrice =  discountCalculatorRepository.CalculateTotalPrice(discountPrice.GoldPrice, discountPrice.Discount, discountPrice.Weight);
 
-                return new DiscountPriceResponse(discountPrice, totalPrice);
+                return Ok(new DiscountPriceResponse(discountPrice, totalPrice));
             }
 
             return Unauthorized("User not logged in");
