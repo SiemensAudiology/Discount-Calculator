@@ -2,11 +2,11 @@
 {
     public class DiscountCalculatorRepository
     {
-        public decimal CalculateTotalPrice(decimal price, decimal? discount, decimal quantity)
+        public decimal CalculateTotalPrice(decimal price, decimal discount, decimal quantity)
         {
-            if(!discount.HasValue) discount = 0;
-
-            return ((price * quantity) - ((price * quantity) - (price * quantity * discount.Value)/100));
+            var weightedPrice = price * quantity;
+            var discountPrice = weightedPrice * discount/100;
+            return weightedPrice - discountPrice;
         }
     }
 }

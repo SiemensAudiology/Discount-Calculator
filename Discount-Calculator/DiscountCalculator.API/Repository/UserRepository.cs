@@ -17,7 +17,7 @@
             return validUsers.Any(x => x.Item1.Equals(username) && x.Item2.Equals(password)); 
         }
 
-        public static bool LogIn(string username, string password)
+        public bool Login(string username, string password)
         {
             if (CanLogin(username, password))
             {
@@ -27,13 +27,13 @@
             return false;
         }
 
-        public static bool LogOut()
+        public bool Logout()
         {
             isLoggedIn = false;
             return true;
         }
 
-        public static bool IsLogIn()
+        public bool IsLoggedIn()
         {
             return isLoggedIn;
         }

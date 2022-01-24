@@ -1,4 +1,5 @@
-﻿using DiscountCalculator.API.Repository;
+﻿using DiscountCalculator.API.DTO;
+using DiscountCalculator.API.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -18,36 +19,19 @@ namespace DiscountCalculator.API.Controllers
             this.discountCalculatorRepository = discountCalculatorRepository;
         }
 
-        // GET: api/<DiscountCalculatorController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<DiscountCalculatorController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // POST api/<DiscountCalculatorController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<DiscountPriceResponse> Post([FromBody] DiscountPriceRequest discountPrice)
         {
+            if (userRepository.IsLoggedIn())
+            {
+                var totalPrice =  discountCalculatorRepository.CalculateTotalPrice(discountPrice.GoldPrice, discountPrice.Discount, discountPrice.Weight);
+
+                return new DiscountPriceResponse(discountPrice, totalPrice);
+            }
+
+            return Unauthorized("User not logged in");
         }
 
-        // PUT api/<DiscountCalculatorController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<DiscountCalculatorController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

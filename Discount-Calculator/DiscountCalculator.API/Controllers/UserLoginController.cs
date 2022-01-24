@@ -1,11 +1,12 @@
-﻿using DiscountCalculator.API.Repository;
+﻿using DiscountCalculator.API.DTO;
+using DiscountCalculator.API.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DiscountCalculator.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Authenticate")]
     [ApiController]
     public class UserLoginController : ControllerBase
     {
@@ -18,36 +19,16 @@ namespace DiscountCalculator.API.Controllers
             this.discountCalculatorRepository = discountCalculatorRepository;
         }
 
-        // GET: api/<UserLoginController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<UserLoginController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // POST api/<UserLoginController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("Login")]
+        public IActionResult Post([FromBody] Login login)
         {
-        }
-
-        // PUT api/<UserLoginController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<UserLoginController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            if (userRepository.Login(login.Username, login.Password))
+            {
+                return StatusCode(200, "Logged in Successfully");
+            }
+            
+            return Unauthorized("Invalid Credentials");
         }
     }
 }
